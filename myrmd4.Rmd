@@ -1,0 +1,45 @@
+---
+title: "chk4"
+author: "Oumar"
+date: "August 24, 2018"
+output: html_document
+---
+
+
+```{r loading, warning= FALSE, message= FALSE, echo=FALSE}
+# load packages
+library(tidyverse)
+library(readr)
+
+# loading boston city payroll
+bos <- read.csv(choose.files())
+
+colnames(bos) <- make.names(colnames(bos))
+
+# converting total earning to number: cleaning out "$"" and ","
+
+bos$TOTAL.EARNINGS <- gsub("\\$", "", bos$TOTAL.EARNINGS)
+bos$TOTAL.EARNINGS <- gsub(",", "", bos$TOTAL.EARNINGS)
+bos$TOTAL.EARNINGS <- as.numeric(bos$TOTAL.EARNINGS)
+
+bos_total <- select(bos, NAME, TITLE, DEPARTMENT, TOTAL.EARNINGS)
+
+# top 1 total earnings
+top3 <- bos_total %>% 
+  arrange(desc(TOTAL.EARNINGS)) %>% 
+  head(1)
+
+
+
+```
+
+The top 1 most payed in 2014 in Boston was `r top3$TITLE` at `r top3$DEPARTMENT`.
+
+That people made $ `r prettyNum(top3$TOTAL.EARNINGS, big.mark=",", scientific = F)`.
+
+Here is the raw data:
+                        
+```{r display_data, warning= FALSE, echo=FALSE}
+library(DT)
+datatable(bos_total)
+```

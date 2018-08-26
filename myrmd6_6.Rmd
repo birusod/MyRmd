@@ -1,0 +1,70 @@
+---
+title: "chk11"
+author: "Oumar"
+date: "August 25, 2018"
+output:    
+  html_document:
+    theme: journal
+    highlight: espresso
+---
+
+
+```{r loading, warning= FALSE, message= FALSE, echo=FALSE}
+# load packages
+library(tidyverse)
+library(readr)
+
+
+# loading boston city payroll
+bos <- read.csv(choose.files())
+
+colnames(bos) <- make.names(colnames(bos))
+
+# cleaning out "$"" and ","
+bos$REGULAR <- gsub("\\$", "", bos$REGULAR)
+bos$REGULAR <- gsub(",", "", bos$REGULAR)
+bos$REGULAR <- as.numeric(bos$REGULAR)
+
+bos$RETRO <- gsub("\\$", "", bos$RETRO)
+bos$RETRO <- gsub(",", "", bos$RETRO)
+bos$RETRO <- as.numeric(bos$RETRO)
+
+bos$OTHER <- gsub("\\$", "", bos$OTHER)
+bos$OTHER <- gsub(",", "", bos$OTHER)
+bos$OTHER <- as.numeric(bos$OTHER)
+
+bos$OVERTIME <- gsub("\\$", "", bos$OVERTIME)
+bos$OVERTIME <- gsub(",", "", bos$OVERTIME)
+bos$OVERTIME <- as.numeric(bos$OVERTIME)
+
+bos$INJURED <- gsub("\\$", "", bos$INJURED)
+bos$INJURED <- gsub(",", "", bos$INJURED)
+bos$INJURED <- as.numeric(bos$INJURED)
+
+bos$DETAIL <- gsub("\\$", "", bos$DETAIL)
+bos$DETAIL <- gsub(",", "", bos$DETAIL)
+bos$DETAIL <- as.numeric(bos$DETAIL)
+
+bos$QUINN <- gsub("\\$", "", bos$QUINN)
+bos$QUINN <- gsub(",", "", bos$QUINN)
+bos$QUINN <- as.numeric(bos$QUINN)
+
+bos$TOTAL.EARNINGS <- gsub("\\$", "", bos$TOTAL.EARNINGS)
+bos$TOTAL.EARNINGS <- gsub(",", "", bos$TOTAL.EARNINGS)
+bos$TOTAL.EARNINGS <- as.numeric(bos$TOTAL.EARNINGS)
+
+```
+
+``` {r analysis, warning=F, message=F}
+top5_bos <- bos %>% 
+  group_by(DEPARTMENT) %>% 
+  summarise(Average.Earnings = mean(TOTAL.EARNINGS, na.rm = TRUE)) %>% 
+  arrange(desc(Average.Earnings)) %>% 
+  head(5)
+```
+
+``` {r table, warning=F, echo=F}
+library(knitr)
+kable(top5_bos)
+
+```

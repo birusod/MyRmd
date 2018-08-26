@@ -1,0 +1,19 @@
+---
+title: "chk2"
+output: html_document
+---
+```{r loading, warning= FALSE, message= FALSE}
+# load packages
+library(tidyverse)
+library(readr)
+
+# loading boston city payroll
+bos <- read.csv(choose.files())
+```
+
+let take a look at the data using the rmarkdown package [`DT`] (https://rstudio.github.io/DT/) that uses the Datatables [jquery library](https://datatables.net/).
+                        
+```{r display_data, warning= FALSE}
+library(DT)
+datatable(bos)
+```
